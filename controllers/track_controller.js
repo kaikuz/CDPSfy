@@ -32,8 +32,15 @@ exports.create = function (req, res) {
 
 	// Aquí debe implementarse la escritura del fichero de audio (track.buffer) en tracks.cdpsfy.es
 	// Esta url debe ser la correspondiente al nuevo fichero en tracks.cdpsfy.es
-	var url = '/TODO';
+	//Nuevo
+	var url = '/media/' + id + '.mp3';
+	fs.writeFile('/var/CDPSfy/public/media/' + id + '.mp3', track.buffer, function(err) {
+		if(err){
+			return console.log(err);
+		}
 
+	});
+//
 	// Escribe los metadatos de la nueva canción en el registro.
 	track_model.tracks[id] = {
 		name: name,
@@ -50,7 +57,10 @@ exports.destroy = function (req, res) {
 	var trackId = req.params.trackId;
 
 	// Aquí debe implementarse el borrado del fichero de audio indetificado por trackId en tracks.cdpsfy.es
-
+	//Nuevo
+	var filePath = '/var/CDPSfy/public/media/' + trackId + '.mp3';
+	fs.unlinkSync(filePath);
+	//
 	// Borra la entrada del registro de datos
 	delete track_model.tracks[trackId];
 	res.redirect('/tracks');
