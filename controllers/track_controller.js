@@ -1,5 +1,6 @@
 var fs = require('fs');
 var track_model = require('./../models/track');
+var Client = require('node-rest-client').Client;
 
 // Devuelve una lista de las canciones disponibles y sus metadatos
 exports.list = function (req, res) {
@@ -27,20 +28,57 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
 	var track = req.files.track;
 	console.log('Nuevo fichero de audio. Datos: ', track);
+	if (track == undefined){
+		res.redirect('/tracks');
+		return
+	}
 	var id = track.name.split('.')[0];
 	var name = track.originalname.split('.')[0];
 
+	/*for (track in track_model.tracks){
+		if (name === track_model.tracks[track].name){
+			res.redirect('/tracks');
+			return
+		}
+	}*/
 	// Aquí debe implementarse la escritura del fichero de audio (track.buffer) en tracks.cdpsfy.es
 	// Esta url debe ser la correspondiente al nuevo fichero en tracks.cdpsfy.es
-	//Nuevo
 	var url = '/media/' + id + '.mp3';
-	fs.writeFile('/var/CDPSfy/public/media/' + id + '.mp3', track.buffer, function(err) {
+	fs.writeFile('/var/CDPSfy/public/' + url, track.buffer, function(err) {
 		if(err){
 			return console.log(err);
 		}
 
 	});
-//
+	
+	client = new Client();
+
+	var args = {
+		//data: { name: track.name },
+		parameters:{name: name, id: id, url: url},
+		headers:{"Content-Type": "application/json"} 
+	};
+
+	client.post("http://10.1.2.11/tracksadd/", args, function(data,response) {
+	  	console.log("updating 10.1.2.11");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.post("http://10.1.2.12/tracksadd/", args, function(data,response) {
+	  	console.log("updating 10.1.2.12");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.post("http://10.1.2.13/tracksadd/", args, function(data,response) {
+	  	console.log("updating 10.1.2.13");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.post("http://10.1.2.14/tracksadd/", args, function(data,response) {
+	  	console.log("updating 10.1.2.14");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
 	// Escribe los metadatos de la nueva canción en el registro.
 	track_model.tracks[id] = {
 		name: name,
@@ -55,15 +93,62 @@ exports.create = function (req, res) {
 // - Eliminar en tracks.cdpsfy.es el fichero de audio correspondiente a trackId
 exports.destroy = function (req, res) {
 	var trackId = req.params.trackId;
-	var track = req.files.track;
-	var name = track.name.split('.')[0];
+	var tracks = track_model.tracks;
+	var name = tracks[trackId].name;
+	var url = tracks[trackId].url;
+	console.log(name)
 
 	// Aquí debe implementarse el borrado del fichero de audio indetificado por trackId en tracks.cdpsfy.es
-	//Nuevo
-	var filePath = '/var/CDPSfy/public/media/' + name + '.mp3';
+	var filePath = '/var/CDPSfy/public/' + url;
 	fs.unlinkSync(filePath);
-	//
+
+	client = new Client();
+
+	var args = {
+		//data: { name: track.name },
+		parameters:{id: trackId},
+		headers:{"Content-Type": "application/json"} 
+	};
+
+	client.delete("http://10.1.2.11/tracksdell/", args, function(data,response) {
+	  	console.log("updating 10.1.2.11");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.delete("http://10.1.2.12/tracksdell/", args, function(data,response) {
+	  	console.log("updating 10.1.2.12");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.delete("http://10.1.2.13/tracksdell/", args, function(data,response) {
+	  	console.log("updating 10.1.2.13");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+	client.delete("http://10.1.2.14/tracksdell/", args, function(data,response) {
+	  	console.log("updating 10.1.2.14");
+	}).on('error', function(err){
+		console.log('request error',err);
+	});
+
 	// Borra la entrada del registro de datos
 	delete track_model.tracks[trackId];
 	res.redirect('/tracks');
+};
+
+exports.addtrack = function (req,res){
+	var name = req.query.name;
+	var id = req.query.id;
+	var url = req.query.url;
+	track_model.tracks[id] = {
+		name: name,
+		url: url
+	};
+	res.end()
+};
+
+exports.deltrack = function (req,res){
+	var id = req.query.id;
+	delete track_model.tracks[id];
+	res.end()
 };
