@@ -59,25 +59,33 @@ exports.create = function (req, res) {
 		headers:{"Content-Type": "application/json"} 
 	};
 
-	client.post("http://10.1.2.11/tracksadd/", args, function(data,response) {
+	var req11 = client.post("http://10.1.2.11/tracksadd/", args, function(data,response) {
 	  	console.log("updating 10.1.2.11");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.post("http://10.1.2.12/tracksadd/", args, function(data,response) {
+	req11.on('error', function(err){
+		console.log('request error',err);
+		req11.end();
+	});
+	var req12 = client.post("http://10.1.2.12/tracksadd/", args, function(data,response) {
 	  	console.log("updating 10.1.2.12");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.post("http://10.1.2.13/tracksadd/", args, function(data,response) {
+	req12.on('error', function(err){
+		console.log('request error',err);
+		req12.end();
+	});
+	var req13 = client.post("http://10.1.2.13/tracksadd/", args, function(data,response) {
 	  	console.log("updating 10.1.2.13");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.post("http://10.1.2.14/tracksadd/", args, function(data,response) {
-	  	console.log("updating 10.1.2.14");
-	}).on('error', function(err){
+	req13.on('error', function(err){
 		console.log('request error',err);
+		req13.end();
+	});
+	var req14 = client.post("http://10.1.2.14/tracksadd/", args, function(data,response) {
+	  	console.log("updating 10.1.2.14");
+	});
+	req14.on('error', function(err){
+		console.log('request error',err);
+		req14.end();
 	});
 	// Escribe los metadatos de la nueva canción en el registro.
 	track_model.tracks[id] = {
@@ -110,25 +118,33 @@ exports.destroy = function (req, res) {
 		headers:{"Content-Type": "application/json"} 
 	};
 
-	client.delete("http://10.1.2.11/tracksdell/", args, function(data,response) {
+	var req11 = client.delete("http://10.1.2.11/tracksdell/", args, function(data,response) {
 	  	console.log("updating 10.1.2.11");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.delete("http://10.1.2.12/tracksdell/", args, function(data,response) {
+	req11.on('error', function(err){
+		console.log('request error',err);
+		req11.end();
+	});
+	var req12 = client.delete("http://10.1.2.12/tracksdell/", args, function(data,response) {
 	  	console.log("updating 10.1.2.12");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.delete("http://10.1.2.13/tracksdell/", args, function(data,response) {
+	req12.on('error', function(err){
+		console.log('request error',err);
+		req12.end();
+	});
+	var req13 = client.delete("http://10.1.2.13/tracksdell/", args, function(data,response) {
 	  	console.log("updating 10.1.2.13");
-	}).on('error', function(err){
-		console.log('request error',err);
 	});
-	client.delete("http://10.1.2.14/tracksdell/", args, function(data,response) {
-	  	console.log("updating 10.1.2.14");
-	}).on('error', function(err){
+	req13.on('error', function(err){
 		console.log('request error',err);
+		req13.end();
+	});
+	var req14 = client.delete("http://10.1.2.14/tracksdell/", args, function(data,response) {
+	  	console.log("updating 10.1.2.14");
+	});
+	req14.on('error', function(err){
+		console.log('request error',err);
+		req14.end();
 	});
 
 	// Borra la entrada del registro de datos
