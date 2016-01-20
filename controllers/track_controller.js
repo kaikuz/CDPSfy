@@ -35,12 +35,6 @@ exports.create = function (req, res) {
 	var id = track.name.split('.')[0];
 	var name = track.originalname.split('.')[0];
 
-	/*for (track in track_model.tracks){
-		if (name === track_model.tracks[track].name){
-			res.redirect('/tracks');
-			return
-		}
-	}*/
 	// Aquí debe implementarse la escritura del fichero de audio (track.buffer) en tracks.cdpsfy.es
 	// Esta url debe ser la correspondiente al nuevo fichero en tracks.cdpsfy.es
 	var url = '/media/' + id + '.mp3';
@@ -59,28 +53,28 @@ exports.create = function (req, res) {
 		headers:{"Content-Type": "application/json"} 
 	};
 
-	var req11 = client.post("http://10.1.2.11/tracksadd/", args, function(data,response) {
+	var req11 = client.post("http://10.1.2.11/trackssubir/", args, function(data,response) {
 	  	console.log("updating 10.1.2.11");
 	});
 	req11.on('error', function(err){
 		console.log('request error',err);
 		req11.end();
 	});
-	var req12 = client.post("http://10.1.2.12/tracksadd/", args, function(data,response) {
+	var req12 = client.post("http://10.1.2.12/trackssubir/", args, function(data,response) {
 	  	console.log("updating 10.1.2.12");
 	});
 	req12.on('error', function(err){
 		console.log('request error',err);
 		req12.end();
 	});
-	var req13 = client.post("http://10.1.2.13/tracksadd/", args, function(data,response) {
+	var req13 = client.post("http://10.1.2.13/trackssubir/", args, function(data,response) {
 	  	console.log("updating 10.1.2.13");
 	});
 	req13.on('error', function(err){
 		console.log('request error',err);
 		req13.end();
 	});
-	var req14 = client.post("http://10.1.2.14/tracksadd/", args, function(data,response) {
+	var req14 = client.post("http://10.1.2.14/trackssubir/", args, function(data,response) {
 	  	console.log("updating 10.1.2.14");
 	});
 	req14.on('error', function(err){
@@ -118,28 +112,28 @@ exports.destroy = function (req, res) {
 		headers:{"Content-Type": "application/json"} 
 	};
 
-	var req11 = client.delete("http://10.1.2.11/tracksdell/", args, function(data,response) {
+	var req11 = client.delete("http://10.1.2.11/tracksborrar/", args, function(data,response) {
 	  	console.log("updating 10.1.2.11");
 	});
 	req11.on('error', function(err){
 		console.log('request error',err);
 		req11.end();
 	});
-	var req12 = client.delete("http://10.1.2.12/tracksdell/", args, function(data,response) {
+	var req12 = client.delete("http://10.1.2.12/tracksborrar/", args, function(data,response) {
 	  	console.log("updating 10.1.2.12");
 	});
 	req12.on('error', function(err){
 		console.log('request error',err);
 		req12.end();
 	});
-	var req13 = client.delete("http://10.1.2.13/tracksdell/", args, function(data,response) {
+	var req13 = client.delete("http://10.1.2.13/tracksborrar/", args, function(data,response) {
 	  	console.log("updating 10.1.2.13");
 	});
 	req13.on('error', function(err){
 		console.log('request error',err);
 		req13.end();
 	});
-	var req14 = client.delete("http://10.1.2.14/tracksdell/", args, function(data,response) {
+	var req14 = client.delete("http://10.1.2.14/tracksborrar/", args, function(data,response) {
 	  	console.log("updating 10.1.2.14");
 	});
 	req14.on('error', function(err){
@@ -152,7 +146,7 @@ exports.destroy = function (req, res) {
 	res.redirect('/tracks');
 };
 
-exports.addtrack = function (req,res){
+exports.subirtrack = function (req,res){
 	var name = req.query.name;
 	var id = req.query.id;
 	var url = req.query.url;
@@ -163,7 +157,7 @@ exports.addtrack = function (req,res){
 	res.end()
 };
 
-exports.deltrack = function (req,res){
+exports.borrartrack = function (req,res){
 	var id = req.query.id;
 	delete track_model.tracks[id];
 	res.end()

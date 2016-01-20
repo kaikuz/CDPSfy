@@ -20,8 +20,8 @@ router.post('/tracks', multer({inMemory: true}), trackController.create);
 
 router.delete('/tracks/:trackId', trackController.destroy);
 
-router.post('/tracksadd',trackController.addtrack);
+router.post('/trackssubir',trackController.subirtrack);
 
-router.delete('/tracksdell', trackController.deltrack);
+router.delete('/tracksborrar', trackController.borrartrack);
 
 module.exports = router;
